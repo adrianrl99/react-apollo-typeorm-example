@@ -25,7 +25,7 @@ export class UserResolver {
   @Authorized(UserRole.ADMIN)
   @Query(() => [User])
   async users() {
-    return User.find()
+    return User.find({ relations: { posts: true, comments: true } })
   }
 
   @Authorized(UserRole.ADMIN)
@@ -33,6 +33,7 @@ export class UserResolver {
   async user(@Arg('data') { email, id, username }: GetUserInput) {
     const user = await User.findOne({
       where: [{ id }, { username }, { email }],
+      relations: { posts: true, comments: true },
     })
     if (!user) throw new UserInputError(UserErrors.NotFound)
     return user
@@ -40,9 +41,11 @@ export class UserResolver {
 
   @Authorized(UserRole.ADMIN)
   @Mutation(() => User)
-  async createUser(@Arg('data') data: CreateUserInput) {
-    const userByUsername = await User.findOneBy({ username: data.username })
-    const userByEmail = await User.findOneBy({ email: data.email })
+  async createUser(
+    @Arg('data') { email, password, username }: CreateUserInput,
+  ) {
+    const userByUsername = await User.findOneBy({ username })
+    const userByEmail = await User.findOneBy({ email })
 
     if (userByUsername || userByEmail)
       throw new UserInputError(UserErrors.UserExists, {
@@ -53,7 +56,11 @@ export class UserResolver {
       })
 
     const user = new User()
-    Object.assign(user, data)
+    user.email = email
+    user.username = username
+    user.password = password
+    user.posts = []
+    user.comments = []
     const errors = await validate(user)
     if (errors.length)
       throw new UserInputError(UserErrors.InvalidFields, {
@@ -62,7 +69,7 @@ export class UserResolver {
         ),
       })
 
-    return user.save()
+    return await user.save()
   }
 
   @Authorized(UserRole.ADMIN)
@@ -70,7 +77,10 @@ export class UserResolver {
   async updateUser(
     @Arg('data') { email, id, password, username }: UpdateUserInput,
   ) {
-    const user = await User.findOneBy({ id })
+    const user = await User.findOne({
+      where: { id },
+      relations: { posts: true, comments: true },
+    })
     if (!user) throw new UserInputError(UserErrors.NotFound)
     if (username) {
       if (await User.findOneBy({ username }))
@@ -101,6 +111,7 @@ export class UserResolver {
       where: [{ id }, { username }, { email }],
     })
     if (!user) throw new UserInputError(UserErrors.NotFound)
+    await Promise.all(user.posts.map(post => post.remove()))
     await user.remove()
     return true
   }
@@ -120,16 +131,18 @@ export class UserResolver {
     )
 
     user.token = token
-    user.save()
 
-    return { user, token }
+    return { user: await user.save(), token }
   }
 
   @Mutation(() => SignUser)
   async signIn(@Arg('data') data: SignInUser) {
-    const user = await User.findOneBy({
-      username: data.username,
-      password: data.password,
+    const user = await User.findOne({
+      where: {
+        username: data.username,
+        password: data.password,
+      },
+      relations: { posts: true, comments: true },
     })
     if (!user) throw new UserInputError(UserErrors.InvalidCredentials)
 
@@ -144,9 +157,8 @@ export class UserResolver {
     )
 
     user.token = token
-    user.save()
 
-    return { user, token }
+    return { user: await user.save(), token }
   }
 
   @Authorized()
@@ -154,7 +166,7 @@ export class UserResolver {
   async logout(@Ctx() { user }: ApolloContext<Context>) {
     if (!user) return false
     user.token = ''
-    user.save()
+    await user.save()
     return true
   }
 
@@ -194,9 +206,10 @@ export class UserResolver {
   }
 
   @Authorized()
-  @Mutation(() => User)
+  @Mutation(() => Boolean)
   async deleteSelf(@Ctx() { user }: ApolloContext<Context>) {
     if (!user) throw new UserInputError(UserErrors.NotFound)
+    await Promise.all(user.posts.map(post => post.remove()))
     await user.remove()
     return true
   }

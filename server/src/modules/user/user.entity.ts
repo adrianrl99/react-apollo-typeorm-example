@@ -61,11 +61,11 @@ export class User extends BaseEntity {
   @Column({ default: '' })
   token: string
 
-  @Field(() => [Post], { nullable: true })
+  @Field(() => [Post])
   @OneToMany(() => Post, post => post.user)
   posts: Post[]
 
-  @Field(() => [Comment], { nullable: true })
+  @Field(() => [Comment])
   @OneToMany(() => Comment, comment => comment.user)
   comments: Comment[]
 

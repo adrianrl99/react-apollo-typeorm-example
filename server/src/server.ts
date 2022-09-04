@@ -7,7 +7,7 @@ import * as path from 'path'
 import { AuthChecker, buildSchema } from 'type-graphql'
 
 import Config from './Config'
-import { User, UserResolver } from './modules'
+import { PostResolver, User, UserResolver } from './modules'
 import type { Context } from './types'
 
 export interface ServerOptions {
@@ -20,7 +20,7 @@ const authChecker: AuthChecker<Context> = ({ context: { user } }, roles) =>
 export default async function server(options: ServerOptions) {
   return await new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [UserResolver, PostResolver],
       emitSchemaFile: path.join('graphql', 'schema.gql'),
       authChecker,
     }),
@@ -36,8 +36,11 @@ export default async function server(options: ServerOptions) {
       if (token) {
         const payload = jwt.verify(token, Config.JWT_SECRET)
         if (typeof payload !== 'string') {
-          const user = await User.findOneBy({ id: payload.id })
-          if (user) return { user }
+          const user = await User.findOne({
+            where: { id: payload.id },
+            relations: { posts: true, comments: true },
+          })
+          if (user && user.token === token) return { user }
         }
       }
 
