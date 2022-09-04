@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken'
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Not } from 'typeorm'
 
-import type { Context } from '../..//types'
 import Config from '../../Config'
+import type { Context } from '../../types'
 import {
   CreateUserInput,
   DeleteUserInput,

@@ -1,15 +1,18 @@
 import { Field, ID, InputType } from 'type-graphql'
 
-import { Post } from '.'
+import { Comment } from '.'
 
 @InputType()
-export class GetPostInput implements Partial<Post> {
+export class GetCommentInput implements Partial<Comment> {
   @Field(() => ID, { nullable: true })
   id: string
 }
 
 @InputType()
-export class CreatePostInput implements Partial<Post> {
+export class CreateCommentInput implements Partial<Comment> {
+  @Field(() => ID)
+  postId: string
+
   @Field(() => String)
   title: string
 
@@ -18,7 +21,7 @@ export class CreatePostInput implements Partial<Post> {
 }
 
 @InputType()
-export class UpdatePostInput implements Partial<Post> {
+export class UpdateCommentInput implements Partial<Comment> {
   @Field(() => ID)
   id: string
 
@@ -30,7 +33,7 @@ export class UpdatePostInput implements Partial<Post> {
 }
 
 @InputType()
-export class DeletePostInput implements Partial<Post> {
+export class DeleteCommentInput implements Partial<Comment> {
   @Field(() => ID)
   id: string
 }

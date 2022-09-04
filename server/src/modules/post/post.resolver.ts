@@ -42,7 +42,6 @@ export class PostResolver {
     post.body = body
     post.user = user
     post.comments = []
-    user.posts.push(post)
     return await post.save()
   }
 
@@ -63,11 +62,7 @@ export class PostResolver {
   @Authorized()
   @OnlyPostOwner(UserRole.ADMIN)
   @Mutation(() => Boolean)
-  async deletePost(
-    @Arg('data') { id }: DeletePostInput,
-    @Ctx() { user }: ApolloContext<Context>,
-  ) {
-    if (!user) throw new UserInputError(UserErrors.NotFound)
+  async deletePost(@Arg('data') { id }: DeletePostInput) {
     const post = await Post.findOneBy({ id })
     if (!post) throw new UserInputError(PostErrors.NotFound)
     await Promise.all(post.comments.map(comment => comment.remove()))
