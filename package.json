@@ -1,0 +1,50 @@
+{
+  "name": "react-apollo-typeorm-example",
+  "version": "1.0.0",
+  "workspaces": [
+    "web",
+    "server"
+  ],
+  "scripts": {
+    "server:install": "npm install -w=server",
+    "server:uninstall": "npm uninstall -w=server",
+    "server:dev": "npm run -w=server dev",
+    "server:test": "npm run -w=server test",
+    "server:seed": "npm run -w=server seed",
+    "server:build": "npm run -w=server build",
+    "server:start": "npm run -w=server start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "assert": "^2.0.0",
+    "browserify-zlib": "^0.2.0",
+    "crypto-browserify": "^3.12.0",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.4",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "eslint-plugin-sort-destructure-keys": "^1.4.0",
+    "eslint-plugin-typescript-sort-keys": "^2.1.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "events": "^3.3.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "prettier": "^2.7.1",
+    "process": "^0.11.10",
+    "querystring-es3": "^0.2.1",
+    "stream-http": "^3.2.0",
+    "tsconfig-paths": "^4.1.0",
+    "typescript": "^4.8.2",
+    "url": "^0.11.0",
+    "util": "^0.12.4"
+  }
+}

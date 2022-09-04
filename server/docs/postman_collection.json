@@ -1,0 +1,406 @@
+{
+	"info": {
+		"_postman_id": "d0bb5c55-19ba-40b0-ba6a-0f9d8ab8ddb9",
+		"name": "react-apollo-typeorm-example",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12818540"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "get users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n    users {\n        id\n        username\n        posts {\n            id\n        }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($data: GetUserInput!) {\n    user(data: $data) {\n        id\n        username\n        posts {\n            id\n        }\n    }\n}",
+								"variables": "{\n    \"data\": {\n        \"username\": \"admin\"\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($data: DeleteUserInput!) {\n    deleteUser(data: $data)\n}",
+								"variables": "{\n    \"data\": {\n        \"username\": \"user\"\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($data: UpdateUserInput!) {\n    updateUser(data: $data) {\n        id\n        username\n        posts {\n            id\n        }\n    }\n}",
+								"variables": "{\n    \"data\": {\n        \"id\": {{user_id}},\n        \"username\": \"user-changed\",\n        \"password\": \"new password\"\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($data: CreateUserInput!) {\n    createUser(data: $data) {\n        id\n        username\n        email\n        createdAt\n        updatedAt\n        comments {\n            id\n            post {\n                id\n            }\n        }\n        posts {\n            id\n        }\n    }\n}",
+								"variables": "{\n    \"data\": {\n        \"username\": \"user\",\n        \"password\": \"password\",\n        \"email\": \"a@a.com\"\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();",
+									"var signUp = res.data.signUp",
+									"pm.environment.set(\"token\", signUp.token);",
+									"pm.environment.set(\"user_id\", signUp.user.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($data: SignUpUser!){\n    signUp(data: $data) {\n        token\n        user {\n            id\n            username\n            email\n            createdAt\n            updatedAt\n            comments {\n                id\n                post {\n                    id\n                }\n            }\n            posts {\n                id\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"data\": {\n        \"username\": \"user1\",\n        \"password\": \"b\",\n        \"email\": \"1a@a.com\"\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();",
+									"var signIn = res.data.signIn",
+									"pm.environment.set(\"token\", signIn.token);",
+									"pm.environment.set(\"user_id\", signIn.user.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($data: SignInUser!){\n    signIn(data: $data) {\n        token\n        user {\n            id\n            username\n            email\n            createdAt\n            updatedAt\n            comments {\n                id\n                post {\n                    id\n                }\n            }\n            posts {\n                id\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"data\": {\n        \"username\": \"admin\",\n        \"password\": \"admin\"\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();",
+									"if (res.data.logout) {",
+									"    pm.environment.unset(\"token\");",
+									"    pm.environment.unset(\"user_id\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    logout\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "post",
+			"item": [
+				{
+					"name": "get posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"var res = pm.response.json();",
+									"var user_id = res.data.users[0]?.id",
+									"pm.environment.set(\"user_id\", user_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n    users {\n        id\n        username\n        posts {\n            id\n        }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($data: GetUserInput!) {\n    user(data: $data) {\n        id\n        username\n        posts {\n            id\n        }\n    }\n}",
+								"variables": "{\n    \"data\": {\n        \"id\": {{user_id}}\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($data: DeleteUserInput!) {\n    deleteUser(data: $data)\n}",
+								"variables": "{\n    \"data\": {\n        \"id\": {{user_id}}\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($data: UpdateUserInput!) {\n    updateUser(data: $data) {\n        id\n        username\n        posts {\n            id\n        }\n    }\n}",
+								"variables": "{\n    \"data\": {\n        \"id\": {{user_id}},\n        \"username\": \"user-changed\",\n        \"password\": \"new password\"\n    }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
