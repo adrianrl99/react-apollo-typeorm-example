@@ -1,3 +1,4 @@
+import type { PostInterface } from 'shared'
 import { Field, ID, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -19,7 +20,7 @@ export enum PostErrors {
 
 @Entity()
 @ObjectType()
-export class Post extends BaseEntity {
+export class Post extends BaseEntity implements PostInterface {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string
@@ -37,7 +38,7 @@ export class Post extends BaseEntity {
   user: User
 
   @Field(() => [Comment])
-  @OneToMany(() => Comment, comment => comment.user)
+  @OneToMany(() => Comment, comment => comment.post)
   comments: Comment[]
 
   @Field(() => String)

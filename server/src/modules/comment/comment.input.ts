@@ -14,9 +14,6 @@ export class CreateCommentInput implements Partial<Comment> {
   postId: string
 
   @Field(() => String)
-  title: string
-
-  @Field(() => String)
   body: string
 }
 
@@ -24,9 +21,6 @@ export class CreateCommentInput implements Partial<Comment> {
 export class UpdateCommentInput implements Partial<Comment> {
   @Field(() => ID)
   id: string
-
-  @Field(() => ID, { nullable: true })
-  title: string
 
   @Field(() => ID, { nullable: true })
   body: string

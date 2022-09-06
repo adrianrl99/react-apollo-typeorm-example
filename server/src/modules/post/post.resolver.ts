@@ -1,12 +1,15 @@
 import { Context as ApolloContext, UserInputError } from 'apollo-server-core'
+import { UserRole } from 'shared'
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
 import { OnlyPostOwner } from '../../decorators'
 import { Context } from '../../types'
-import { UserErrors, UserRole } from '../user'
+import { PaginationInput } from '../shared/shared.input'
+import { UserErrors } from '../user'
 import {
   CreatePostInput,
   DeletePostInput,
+  FilterPostByInput,
   GetPostInput,
   Post,
   PostErrors,
@@ -15,16 +18,43 @@ import {
 
 @Resolver(() => Post)
 export class PostResolver {
+  @Query(() => Number)
+  async countPosts() {
+    return Post.count()
+  }
+
   @Query(() => [Post])
-  async posts() {
-    return Post.find({ relations: { user: true, comments: true } })
+  async posts(
+    @Arg('pagination', { nullable: true })
+    pag?: PaginationInput,
+    @Arg('filter', { nullable: true })
+    by?: FilterPostByInput,
+  ) {
+    return Post.find({
+      relations: { user: true, comments: true },
+      skip: pag && pag.limit && pag.offset ? pag.limit * pag.offset : undefined,
+      take: pag?.limit,
+      where: {
+        id: by?.id,
+        user: {
+          id: by?.user?.id,
+          username: by?.user?.username,
+          email: by?.user?.email,
+        },
+      },
+    })
   }
 
   @Query(() => Post)
   async post(@Arg('data') { id }: GetPostInput) {
     const post = await Post.findOne({
       where: { id },
-      relations: { user: true, comments: true },
+      relations: {
+        user: true,
+        comments: {
+          user: true,
+        },
+      },
     })
     if (!post) throw new UserInputError(PostErrors.NotFound)
     return post

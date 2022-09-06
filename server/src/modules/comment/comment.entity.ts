@@ -1,3 +1,4 @@
+import type { CommentInterface } from 'shared'
 import { Field, ID, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -18,14 +19,10 @@ export enum CommentErrors {
 
 @Entity()
 @ObjectType()
-export class Comment extends BaseEntity {
+export class Comment extends BaseEntity implements CommentInterface {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string
-
-  @Field(() => String)
-  @Column()
-  title: string
 
   @Field(() => String)
   @Column('text')

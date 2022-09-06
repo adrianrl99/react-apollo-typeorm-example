@@ -5,7 +5,6 @@ const Config = {
 }
 
 if (!Config.DATABASE) throw new Error('Missing environment variable "DATABASE"')
-if (!Config.JWT_SECRET)
-  throw new Error('Missing environment variable "JWT_SECRET"')
+if (!Config.JWT_SECRET) throw new Error('Missing environment variable "JWT_SECRET"')
 
 export default Config

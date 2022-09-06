@@ -2,9 +2,11 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
+    "module": "CommonJS",
     "noEmit": false,
     "rootDir": "./src",
     "baseUrl": "."
   },
+  "include": ["**/*.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["dist/**", "scripts/*"]
 }

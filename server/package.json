@@ -5,7 +5,6 @@
   "main": "dist/main.js",
   "scripts": {
     "dev": "tsnd --respawn -r dotenv/config src/main.ts",
-    "test": "ts-node -r dotenv/config scripts/test.ts",
     "seed": "ts-node -r dotenv/config scripts/seed.ts",
     "build": "rimraf dist && tsc",
     "start": "node -r dotenv/config dist/main.js"
@@ -14,19 +13,20 @@
   "dependencies": {
     "apollo-server": "^3.10.2",
     "apollo-server-core": "^3.10.2",
+    "axios": "^0.27.2",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.2",
     "graphql": "^15.8.0",
     "jsonwebtoken": "^8.5.1",
     "reflect-metadata": "^0.1.13",
+    "shared": "file:../shared",
     "sqlite3": "^5.0.11",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.3.9"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/jsonwebtoken": "^8.5.9",
-    "@types/newman": "^5.3.0",
-    "newman": "^5.3.2",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0"

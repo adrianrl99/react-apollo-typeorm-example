@@ -1,6 +1,29 @@
 {
   "name": "web",
   "version": "1.0.0",
-  "scripts": {},
-  "license": "MIT"
+  "scripts": {
+    "dev": "vite --port 4001",
+    "build": "vite build",
+    "start": "vite preview start"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@apollo/client": "^3.6.9",
+    "@nextui-org/react": "^1.0.0-beta.10",
+    "graphql": "^16.6.0",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.3.0",
+    "react-use": "^17.4.0",
+    "recoil": "^0.7.5",
+    "shared": "file:../shared"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.184",
+    "@types/react": "^18.0.18",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.1.0",
+    "vite": "^3.1.0"
+  }
 }

@@ -1,3 +1,8 @@
+import {
+  FilterUserByInputInterface,
+  SignInUserInterface,
+  SignUpUserInterface,
+} from 'shared'
 import { Field, ID, InputType } from 'type-graphql'
 
 import { User } from './user.entity'
@@ -54,7 +59,7 @@ export class DeleteUserInput implements Partial<User> {
 }
 
 @InputType()
-export class SignInUser implements Partial<User> {
+export class SignInUser implements SignInUserInterface {
   @Field(() => String)
   username: string
 
@@ -63,7 +68,7 @@ export class SignInUser implements Partial<User> {
 }
 
 @InputType()
-export class SignUpUser implements Partial<User> {
+export class SignUpUser implements SignUpUserInterface {
   @Field(() => String)
   username: string
 
@@ -81,6 +86,18 @@ export class UpdateSelfUserInput implements Partial<User> {
 
   @Field(() => String, { nullable: true })
   password: string
+
+  @Field(() => String, { nullable: true })
+  email: string
+}
+
+@InputType()
+export class FilterUserByInput implements FilterUserByInputInterface {
+  @Field(() => ID, { nullable: true })
+  id: string
+
+  @Field(() => String, { nullable: true })
+  username: string
 
   @Field(() => String, { nullable: true })
   email: string

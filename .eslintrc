@@ -4,7 +4,7 @@
     "node": true,
     "es6": true
   },
-  "extends": ["standard", "prettier"],
+  "extends": ["standard", "next", "prettier"],
   "plugins": [
     "prettier",
     "simple-import-sort",
@@ -12,6 +12,11 @@
     "unused-imports",
     "sort-destructure-keys"
   ],
+  "settings": {
+    "next": {
+      "rootDir": "web/"
+    }
+  },
   "rules": {
     "prettier/prettier": "error",
     "arrow-body-style": ["error", "as-needed"],

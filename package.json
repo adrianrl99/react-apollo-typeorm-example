@@ -1,29 +1,37 @@
 {
-  "name": "react-apollo-typeorm-example",
+  "name": "blog-example",
   "version": "1.0.0",
   "workspaces": [
     "web",
-    "server"
+    "server",
+    "shared"
   ],
   "scripts": {
     "server:install": "npm install -w=server",
     "server:uninstall": "npm uninstall -w=server",
     "server:dev": "npm run -w=server dev",
-    "server:test": "npm run -w=server test",
-    "server:seed": "npm run -w=server seed",
     "server:build": "npm run -w=server build",
-    "server:start": "npm run -w=server start"
+    "server:start": "npm run -w=server start",
+    "server:seed": "npm run -w=server seed",
+    "web:install": "npm install -w=web",
+    "web:uninstall": "npm uninstall -w=web",
+    "web:dev": "npm run -w=web dev",
+    "web:build": "npm run -w=web build",
+    "web:start": "npm run -w=web start"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^18.7.14",
+    "@types/react": "^18.0.18",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
     "crypto-browserify": "^3.12.0",
     "eslint": "^8.23.0",
+    "eslint-config-next": "^12.2.5",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",

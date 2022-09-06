@@ -27,7 +27,7 @@ export default async function server(options: ServerOptions) {
     csrfPrevention: true,
     cache: 'bounded',
     cors: {
-      origin: ['https:/localhost:4001'],
+      origin: ['http://localhost:4001'],
     },
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
     async context({ req }) {

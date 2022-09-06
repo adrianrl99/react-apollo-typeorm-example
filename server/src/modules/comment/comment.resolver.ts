@@ -1,10 +1,11 @@
 import { Context as ApolloContext, UserInputError } from 'apollo-server-core'
+import { UserRole } from 'shared'
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
 import { OnlyCommentOwner } from '../../decorators'
 import { Context } from '../../types'
 import { Post, PostErrors } from '../post'
-import { UserErrors, UserRole } from '../user'
+import { UserErrors } from '../user'
 import {
   Comment,
   CommentErrors,
@@ -34,7 +35,7 @@ export class CommentResolver {
   @Authorized()
   @Mutation(() => Comment)
   async createComment(
-    @Arg('data') { body, postId, title }: CreateCommentInput,
+    @Arg('data') { body, postId }: CreateCommentInput,
     @Ctx() { user }: ApolloContext<Context>,
   ) {
     if (!user) throw new UserInputError(UserErrors.NotFound)
@@ -44,7 +45,6 @@ export class CommentResolver {
     })
     if (!post) throw new UserInputError(PostErrors.NotFound)
     const comment = new Comment()
-    comment.title = title
     comment.body = body
     comment.user = user
     comment.post = post
@@ -54,13 +54,12 @@ export class CommentResolver {
   @Authorized()
   @OnlyCommentOwner(UserRole.ADMIN)
   @Mutation(() => Comment)
-  async updateComment(@Arg('data') { body, id, title }: UpdateCommentInput) {
+  async updateComment(@Arg('data') { body, id }: UpdateCommentInput) {
     const comment = await Comment.findOne({
       where: { id },
       relations: { user: true, post: true },
     })
     if (!comment) throw new UserInputError(CommentErrors.NotFound)
-    if (title) comment.title = title
     if (body) comment.body = body
     return await comment.save()
   }

@@ -1,6 +1,7 @@
 import { Context as ApolloContext, UserInputError } from 'apollo-server-core'
 import { validate } from 'class-validator'
 import jwt from 'jsonwebtoken'
+import { UserRole } from 'shared'
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Not } from 'typeorm'
 
@@ -17,7 +18,6 @@ import {
   UpdateUserInput,
   User,
   UserErrors,
-  UserRole,
 } from '.'
 
 @Resolver(() => User)
@@ -137,6 +137,8 @@ export class UserResolver {
 
   @Mutation(() => SignUser)
   async signIn(@Arg('data') data: SignInUser) {
+    console.log(data)
+
     const user = await User.findOne({
       where: {
         username: data.username,
